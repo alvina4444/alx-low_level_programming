@@ -16,8 +16,7 @@ int main(void)
    * - only one statement
    * - you are not allowed to code anything else than this line of code
    */
-  *(p + 5) = 98;
-  printf("a[2] = %d\n", *(p + 5);
+  *(p + 5) = 98, printf("a[2] = %d\n", *(p + 5));
   return (0);
 }
 
