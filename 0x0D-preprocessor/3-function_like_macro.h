@@ -1,4 +1,4 @@
-#include <stdio.h>
+#ifndef _FUNCTION_LIKE_MACRO
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
