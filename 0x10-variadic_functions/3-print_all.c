@@ -8,62 +8,44 @@
  */
 void print_all(const char * const format, ...)
 {
-        va_list args;
-        unsigned int i = 0, j = 0;
-        char *separator = "";
-        format_t fms[] = {
-                {"c", print_char},
-                {"i", print_integer},
-                {"f", print_float},
-                {"s", print_string},
-                {NULL, NULL}
-        };
+	int i = 0;
+	char *str, *sep = "";
 
-        va_start(args, format);
-        while (format && format[i])
-        {
-                j = 0;
-                while (fms[j].fmt)
-                {
-                        if (*(fms[j].fmt) == format[i])
-                        {
-                                printf("%s", separator);
-                                fms[j].printer(args);
-                                separator = ", ";
-                                break;
-                        }
-                        j++;
-                }
-                i++;
-        }
-        printf("\n");
-        va_end(args);
+	va_list list;
+
+	va_start(list, format);
+
+	if (format)
+	{
+		while (format[i])
+		{
+			switch (format[i])
+			{
+				case 'c':
+					printf("%s%c", sep, va_arg(list, int));
+					break;
+				case 'i':
+					printf("%s%d", sep, va_arg(list, int));
+					break;
+				case 'f':
+					printf("%s%f", sep, va_arg(list, double));
+					break;
+				case 's':
+					str = va_arg(list, char *);
+					if (!str)
+						str = "(nil)";
+					printf("%s%s", sep, str);
+					break;
+				default:
+					i++;
+					continue;
+			}
+			sep = ", ";
+			i++;
+		}
+	}
+
+	printf("\n");
+	va_end(list);
 }
 
-void print_char(va_list args)
-{
-        printf("%c", va_arg(args, int));
-}
-
-void print_integer(va_list args)
-{
-        printf("%d", va_arg(args, int));
-}
-
-void print_float(va_list args)
-{
-        printf("%f", va_arg(args, double));
-}
-
-void print_string(va_list args)
-{
-        char *str;
-
-        str = va_arg(args, char *);
-        if (str == NULL)
-        {
-                printf("(nil)");
-                return;
-        }
-        printf("%s", str);
-}
